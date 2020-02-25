@@ -18,7 +18,7 @@ public class VizAIController {
 
     @Header
     @GetMapping("/")
-    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "https://fast-fortress-33336.herokuapp.com/"})
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "https://fast-fortress-33336.herokuapp.com"})
     public HeaderData getData(){
         return controller.getData();
     }
