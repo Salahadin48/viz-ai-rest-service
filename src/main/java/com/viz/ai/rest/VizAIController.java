@@ -15,10 +15,8 @@ public class VizAIController {
 
     @Header
     @GetMapping("/")
-    @CrossOrigin(origins = {
-            "https://fierce-brook-75675.herokuapp.com", "http://fierce-brook-75675.herokuapp.com",
-            "https://viz-ai-web.herokuapp.com", "http://viz-ai-web.herokuapp.com",
-            "http://www.viz-ai.com", "https://www.viz-ai.com"})
+    @CrossOrigin(origins = {"https://viz-ai-web.herokuapp.com", "http://viz-ai-web.herokuapp.com",
+            "http://www.viz-ai.com", "https://www.viz-ai.com", "https://viz-ai.com", "http://viz-ai.com"})
     public HeaderData getData() {
         return controller.getData();
     }
