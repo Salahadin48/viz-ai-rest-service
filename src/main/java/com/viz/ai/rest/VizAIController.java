@@ -14,12 +14,15 @@ import javax.validation.Valid;
 
 @RestController
 public class VizAIController {
-    @Autowired Controller controller;
+    @Autowired
+    Controller controller;
 
     @Header
     @GetMapping("/")
-    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "https://fierce-brook-75675.herokuapp.com", "http://fierce-brook-75675.herokuapp.com"})
-    public HeaderData getData(){
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200",
+            "https://fierce-brook-75675.herokuapp.com", "http://fierce-brook-75675.herokuapp.com",
+            "http://www.viz-ai.com", "https://www.viz-ai.com"})
+    public HeaderData getData() {
         return controller.getData();
     }
 }
