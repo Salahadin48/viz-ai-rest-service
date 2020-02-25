@@ -6,11 +6,7 @@ import com.viz.ai.model.HeaderData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-
 
 @RestController
 public class VizAIController {
@@ -21,7 +17,7 @@ public class VizAIController {
     @GetMapping("/")
     @CrossOrigin(origins = {
             "https://fierce-brook-75675.herokuapp.com", "http://fierce-brook-75675.herokuapp.com",
-            "https://viz-ai-web.herokuapp.com", "http://viz-ai-web.herokuapp.com/",
+            "https://viz-ai-web.herokuapp.com", "http://viz-ai-web.herokuapp.com",
             "http://www.viz-ai.com", "https://www.viz-ai.com"})
     public HeaderData getData() {
         return controller.getData();
