@@ -9,7 +9,7 @@ public class CompositeContent implements Content {
     private List<Content> contents;
 
     public CompositeContent() {
-
+        this("", "");
     }
 
     public CompositeContent(String titleOrrouterLink, String argType) {
@@ -43,5 +43,10 @@ public class CompositeContent implements Content {
 
     public void setContents(List<Content> contents) {
         this.contents = contents;
+    }
+
+    @Override
+    public void addContent(Content content) {
+        this.contents.add(content);
     }
 }

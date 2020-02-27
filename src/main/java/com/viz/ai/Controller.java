@@ -52,9 +52,9 @@ public class Controller {
         CompositeContent compositeContent2 = new CompositeContent("/components", "links");
         compositeContent2.setContents(contents2);
 
-        List<Content> mainContents = new ArrayList<>();
-        mainContents.add(compositeContent1);
-        mainContents.add(compositeContent2);
+        Content mainContents = new CompositeContent();
+        mainContents.addContent(compositeContent1);
+        mainContents.addContent(compositeContent2);
 
         return new HeaderData(logo, mainContents);
     }

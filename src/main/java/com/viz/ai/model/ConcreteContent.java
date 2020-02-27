@@ -37,4 +37,9 @@ public class ConcreteContent implements Content {
     public void setHref(String href) {
         this.href = href;
     }
+
+    @Override
+    public void addContent(Content content) {
+
+    }
 }
