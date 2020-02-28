@@ -1,25 +1,24 @@
 package com.viz.ai;
 
+import com.viz.ai.annotation.Footer;
 import com.viz.ai.annotation.Header;
-import com.viz.ai.model.HeaderData;
 import com.viz.ai.rest.VizAIController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Component
 public class VizAiFilter implements Filter {
@@ -43,6 +42,8 @@ public class VizAiFilter implements Filter {
         String url = ((HttpServletRequest) request).getRequestURL().toString();
         // String queryString = ((HttpServletRequest)request).getQueryString();
         System.out.println("URL: " + url);
+        String inDemandAnnotation = getAnnotationNameFromRequestPath(req.getServletPath());
+        System.out.println("Servlet Path: " + req.getServletPath());
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(req);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(res);
@@ -51,63 +52,75 @@ public class VizAiFilter implements Filter {
 
         } finally {
 
-            StringBuilder builder = null;
+            AtomicReference<StringBuilder> builder = new AtomicReference<>();
+            builder.set(new StringBuilder());
+            byte[] responseArray = responseWrapper.getContentAsByteArray();
 
             Method[] methods = runner.getClass().getMethods();
 
-            for (Method method : methods) {
-                Header annos = method.getAnnotation(Header.class);
-                if (annos != null) {
-                    byte[] responseArray = responseWrapper.getContentAsByteArray();
-                    builder = new StringBuilder();
-                    builder.append("{ \"header\": ");
-                    builder.append(new String(responseArray));
-                    builder.append(" }");
-                }
-            }
+            Arrays.stream(methods).forEach(m -> {
+                Arrays.stream(m.getDeclaredAnnotations()).map(a -> a.annotationType()).filter(a -> a.getSimpleName().equals(inDemandAnnotation)).forEach(a -> {
+                    System.out.println("Demanded and Found Annotation: " + a.getSimpleName());
+                    if (a.getSimpleName().equals("Header")) {
+                        builder.get().append("{ \"header\": ");
+                        builder.get().append(new String(responseArray));
+                        builder.get().append(" }");
+                    } else if (a.getSimpleName().equals("Footer")) {
+                        builder.get().append("{ \"footer\": ");
+                        builder.get().append(new String(responseArray));
+                        builder.get().append(" }");
+                    }
+                });
+            });
+
+//            for (Method method : methods) {
+//                Annotation[] annotations = method.getDeclaredAnnotations();
+//                Arrays.stream(annotations).map(ann -> ann.annotationType()).filter(x -> x.getSimpleName().equals("Header")||x.getSimpleName().equals("Footer")).forEach(a -> {
+//                    if (a.getSimpleName().equals("Header")) {
+//                        System.out.println(a.getSimpleName());
+//                        Header annos = method.getAnnotation(Header.class);
+//                        if (annos != null) {
+//                            byte[] responseArray = responseWrapper.getContentAsByteArray();
+//                            builder.set(new StringBuilder());
+//                            builder.get().append("{ \"header\": ");
+//                            builder.get().append(new String(responseArray));
+//                            builder.get().append(" }");
+//                        }
+//                    } else if (a.getSimpleName().equals("Footer")) {
+//                        System.out.println(a.getSimpleName());
+//                        Footer annos = method.getAnnotation(Footer.class);
+//                        if (annos != null) {
+//                            byte[] responseArray = responseWrapper.getContentAsByteArray();
+//                            builder.set(new StringBuilder());
+//                            builder.get().append("{ \"footer\": ");
+//                            builder.get().append(new String(responseArray));
+//                            builder.get().append(" }");
+//                        }
+//                    }
+//
+//                });
+//
+//            }
             responseWrapper.resetBuffer();
             res.getHeaderNames().stream().forEach(h -> {
                 responseWrapper.setHeader(h, res.getHeader(h));
             });
-            responseWrapper.getWriter().write(builder.toString());
+            responseWrapper.getWriter().write(builder.get().toString());
             responseWrapper.copyBodyToResponse();
         }
+    }
 
-
-        Method[] methods = runner.getClass().getMethods();
-
-        for (Method method : methods) {
-            Header annos = method.getAnnotation(Header.class);
-            if (annos != null) {
-//                Annotation[] annotations = method.getDeclaredAnnotations();
-//                Arrays.asList(annotations).stream().forEach(a -> {
-//                    System.out.println("Annotation: " + a.annotationType().getSimpleName());
-//                    if (a instanceof GetMapping) {
-//                        GetMapping gm = (GetMapping) a;
-//                        Parameter[] par = method.getParameters();
-//                        Arrays.asList(par).stream().forEach(p -> {
-//                            Annotation[] parAnno = p.getDeclaredAnnotations();
-//                            Arrays.asList(parAnno).stream().forEach(pa -> {
-//                                if (pa != null && pa instanceof PathVariable) {
-//                                    PathVariable pv = (PathVariable) pa;
-//                                    System.out.println(p.getName() + " is a PathVariable with value: " + pv.value());
-//                                }
-//                            });
-//                        });
-//                        System.out.println("URL Path: " + gm.value()[0] + " ");
-//                    }
-//                });
-
-//                try {
-//                    HeaderData output = (HeaderData) method.invoke(runner, 0);
-//                    System.out.println("Output: " + output.getName() + ": " + output.getValue());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
-            }
+    private String getAnnotationNameFromRequestPath(String servletPath) {
+        String output = null;
+        switch (servletPath) {
+            case "/get/header":
+                output = "Header";
+                break;
+            case "/get/footer":
+                output = "Footer";
+                break;
         }
-
+        return output;
     }
 
     @Override

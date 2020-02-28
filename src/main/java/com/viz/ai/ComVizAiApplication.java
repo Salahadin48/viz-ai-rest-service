@@ -1,23 +1,10 @@
 package com.viz.ai;
 
 import com.viz.ai.annotation.EnableVizAI;
-import com.viz.ai.annotation.Header;
-import com.viz.ai.model.HeaderData;
 import com.viz.ai.rest.VizAIController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.validation.Valid;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Arrays;
 
 
 @EnableVizAI

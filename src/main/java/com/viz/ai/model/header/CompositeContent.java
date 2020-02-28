@@ -1,4 +1,4 @@
-package com.viz.ai.model;
+package com.viz.ai.model.header;
 
 import java.util.ArrayList;
 import java.util.List;

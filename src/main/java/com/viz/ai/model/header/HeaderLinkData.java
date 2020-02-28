@@ -1,4 +1,4 @@
-package com.viz.ai.model;
+package com.viz.ai.model.header;
 
 public class HeaderLinkData {
     private String type;

@@ -1,4 +1,4 @@
-package com.viz.ai.model;
+package com.viz.ai.model.header;
 
 public class ConcreteContent implements Content {
     private String title;

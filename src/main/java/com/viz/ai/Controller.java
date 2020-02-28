@@ -1,6 +1,10 @@
 package com.viz.ai;
 
-import com.viz.ai.model.*;
+import com.viz.ai.annotation.Footer;
+import com.viz.ai.model.footer.FooterData;
+import com.viz.ai.model.footer.PrivateLink;
+import com.viz.ai.model.footer.Social;
+import com.viz.ai.model.header.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,18 +13,8 @@ import java.util.List;
 
 @RestController
 public class Controller {
-    @GetMapping("/data")
-    public HeaderData getData() {
-//        HeaderLinkData headerLinkDataA = new HeaderLinkData("Button", "Contacts");
-//        HeaderLinkData headerLinkDataB = new HeaderLinkData("ToolTip", "Facebook");
-//        HeaderLinkData headerLinkDataC = new HeaderLinkData("ToolTip", "Twitter");
-//        HeaderLinkData headerLinkDataD = new HeaderLinkData("Input", "Instagram");
-//
-//        List<HeaderLinkData> linkDataList = new ArrayList<>();
-//        linkDataList.add(headerLinkDataA);
-//        linkDataList.add(headerLinkDataB);
-//        linkDataList.add(headerLinkDataC);
-//        linkDataList.add(headerLinkDataD);
+    @GetMapping("/header")
+    public HeaderData getHeader() {
 
         Logo logo = new Logo("/home", "./assets/img/brand/blue.png");
 
@@ -37,6 +31,19 @@ public class Controller {
         contents1.add(cc3);
         CompositeContent compositeContent1 = new CompositeContent("Components", "title");
         compositeContent1.setContents(contents1);
+
+        ConcreteContent ccExample1 = new ConcreteContent("Landing", "landing Page", "/landing");
+        ConcreteContent ccExample2 = new ConcreteContent("Profile", "Profile Page", "user-profile");
+        ConcreteContent ccExample3 = new ConcreteContent("Log In", "Login Page", "login");
+        ConcreteContent ccExample4 = new ConcreteContent("Register", "Registration Page", "register");
+        List<Content> contentsx1 = new ArrayList<>();
+        contentsx1.add(ccExample1);
+        contentsx1.add(ccExample2);
+        contentsx1.add(ccExample3);
+        contentsx1.add(ccExample4);
+
+        CompositeContent compositeContentx = new CompositeContent("Example", "title");
+        compositeContentx.setContents(contentsx1);
 
         ConcreteContent cc12 = new ConcreteContent("Facebook", null, "https://www.facebook.com");
         ConcreteContent cc22 = new ConcreteContent("Instagram", null, "https://www.instagram.com");
@@ -55,7 +62,34 @@ public class Controller {
         Content mainContents = new CompositeContent();
         mainContents.addContent(compositeContent1);
         mainContents.addContent(compositeContent2);
+        mainContents.addContent(compositeContentx);
 
         return new HeaderData(logo, mainContents);
+    }
+
+    @GetMapping("/footer")
+    public FooterData getFooter() {
+        PrivateLink visualAi = new PrivateLink("Visual AI","https://www.viz-ai.com/");
+        PrivateLink aboutUs = new PrivateLink("About Us","https://www.viz-ai.com/");
+        PrivateLink blog = new PrivateLink("Blog","https://www.viz-ai.com/");
+        PrivateLink mitLicense = new PrivateLink("MIT License","https://www.viz-ai.com/");
+        List<PrivateLink> privateLinksList = new ArrayList<>();
+        privateLinksList.add(visualAi);
+        privateLinksList.add(aboutUs);
+        privateLinksList.add(blog);
+        privateLinksList.add(mitLicense);
+
+        Social socialT = new Social("Twitter", "https://twitter.com/");
+        Social socialF = new Social("Facebook", "https://twitter.com/");
+        Social socialD = new Social("Dribbble", "https://twitter.com/");
+        Social socialG = new Social("Github", "https://twitter.com/");
+        List<Social> socialList = new ArrayList<>();
+        socialList.add(socialT);
+        socialList.add(socialF);
+        socialList.add(socialD);
+        socialList.add(socialG);
+
+        FooterData footer = new FooterData("Thank you for supporting us!", socialList, privateLinksList);
+        return footer;
     }
 }

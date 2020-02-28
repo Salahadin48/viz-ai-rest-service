@@ -1,12 +1,8 @@
-package com.viz.ai.model;
+package com.viz.ai.model.header;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import static java.util.List.*;
 
 @Getter
 @Setter
