@@ -79,10 +79,10 @@ public class Controller {
         privateLinksList.add(blog);
         privateLinksList.add(mitLicense);
 
-        Social socialT = new Social("Twitter", "https://twitter.com/");
-        Social socialF = new Social("Facebook", "https://twitter.com/");
-        Social socialD = new Social("Dribbble", "https://twitter.com/");
-        Social socialG = new Social("Github", "https://twitter.com/");
+        Social socialT = new Social("Twitter", "https://www.twitter.com/");
+        Social socialF = new Social("Facebook", "https://www.facebook.com/");
+        Social socialD = new Social("Dribbble", "https://www.dribbble.com/");
+        Social socialG = new Social("Github", "https://www.github.com/");
         List<Social> socialList = new ArrayList<>();
         socialList.add(socialT);
         socialList.add(socialF);
